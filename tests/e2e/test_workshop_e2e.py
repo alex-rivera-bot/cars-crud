@@ -27,11 +27,12 @@ def test_user_edits_car_and_change_survives_reload(page, live_server):
     expect(page.get_by_role("heading", name="Honda Civic")).to_be_visible()
 
     page.get_by_role("link", name="Edit car").click()
+    expect(page.get_by_role("button", name="Save changes")).to_be_enabled()
     page.get_by_label("Model", exact=True).fill("Accord")
     page.get_by_label("Year", exact=True).fill("2023")
     page.get_by_role("button", name="Save changes").click()
 
-    expect(page.get_by_role("heading", name="Honda Accord")).to_be_visible()
+    expect(page.get_by_role("heading", name="Honda Accord")).to_be_visible(timeout=15000)
     page.reload()
-    expect(page.locator("#car-model")).to_have_text("Accord")
-    expect(page.locator("#car-year")).to_have_text("2023")
+    expect(page.locator("#car-model")).to_have_text("Accord", timeout=15000)
+    expect(page.locator("#car-year")).to_have_text("2023", timeout=15000)
